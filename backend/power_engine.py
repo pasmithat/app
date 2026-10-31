@@ -366,7 +366,7 @@ def baseline_inputs(snaps, settings):
         rating = sum(s["ac_units"] * s["ac_power_rating_kw"] for s in snaps) / total
     hours = sum(s["daily_operating_hours"] for s in snaps) / len(snaps) if snaps else 0
     return {"outdoor_temp_c": BASELINE_OUTDOOR_TEMP_C, "ac_units": op_units,
-            "ac_power_rating_kw": round(rating, 4), "operating_hours": round(hours, 2),
+            "ac_power_rating_kw": round(rating, 2), "operating_hours": round(hours, 2),
             "occupied_buildings": sum(1 for s in snaps if s["occupancy_status"] == "occupied"),
             "tariff_inr_per_kwh": settings["tariff_inr_per_kwh"],
             "available_capacity_kw": round(sum(s["available_capacity_kw"] for s in snaps), 2)}

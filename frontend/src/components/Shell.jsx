@@ -35,6 +35,7 @@ export const Shell = ({ children }) => {
                 <div key={s.id} className="flex items-center shrink-0">
                   <Link
                     to={s.to}
+                    onClick={() => { if (!s.to.includes("#")) window.scrollTo({ top: 0, behavior: "smooth" }); }}
                     data-testid={`pipeline-step-${s.id}`}
                     className={`font-mono text-[11px] uppercase tracking-wider px-2.5 py-1.5 rounded transition-colors ${
                       active ? "bg-cyan-500/15 text-cyan-300 border border-cyan-500/40" : "text-slate-400 hover:text-slate-100 border border-transparent"

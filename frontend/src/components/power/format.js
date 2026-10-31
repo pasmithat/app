@@ -3,7 +3,7 @@ export const fmt = (n, d = 0) =>
     ? "—"
     : Number(n).toLocaleString("en-IN", { maximumFractionDigits: d, minimumFractionDigits: d });
 
-export const inr = (n) => (n === null || n === undefined ? "—" : `₹${fmt(n, 0)}`);
+export const inr = (n) => (n === null || n === undefined ? "—" : `${n < 0 ? "−" : ""}₹${fmt(Math.abs(n), 0)}`);
 
 export const signed = (n, d = 0, suffix = "") =>
   n === null || n === undefined ? "—" : `${n > 0 ? "+" : ""}${fmt(n, d)}${suffix}`;

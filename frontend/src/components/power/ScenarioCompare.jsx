@@ -48,7 +48,7 @@ export const ScenarioCompare = ({ scope }) => {
             <BarChart data={chart}>
               <XAxis dataKey="name" stroke="#475569" fontSize={10} interval={0} />
               <YAxis stroke="#475569" fontSize={10} width={48} />
-              <Tooltip contentStyle={{ background: "#121824", border: "1px solid #334155", fontSize: 12 }} formatter={(v) => `${fmt(v, 1)} kW`} />
+              <Tooltip cursor={{ fill: "rgba(255,255,255,0.04)" }} contentStyle={{ background: "#121824", border: "1px solid #334155", fontSize: 12 }} formatter={(v) => `${fmt(v, 1)} kW`} />
               <Legend wrapperStyle={{ fontSize: 11 }} />
               <Bar dataKey="before" name="Before (kW)" fill="#475569" radius={[3, 3, 0, 0]} />
               <Bar dataKey="after" name="After (kW)" fill="#00F0FF" radius={[3, 3, 0, 0]} />

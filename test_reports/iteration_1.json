@@ -1,0 +1,38 @@
+{
+  "summary": "First test run of PART 22 Power Monitoring (Chennai). Backend: existing 39 unit tests pass + new 31 E2E API tests via public URL all pass (all endpoints, formulas, expected demo alerts/abnormal rules, thresholds PUT w/ restore, sensor override w/ cleanup, 400/404/422 validation). Frontend /power: KPIs, zone pills, clear scope, table row select, Leaflet marker click -> scope + KPI update, hidden-count (1), alert tabs (4 overload / 11 abnormal), threshold save/invalid toast/defaults, What-If (temp ignored w/o switch, +30% with switch at 45C, reset, overload warning, 422 inline error, slider keyboard), baseline integrity, 5 scenario rows, 17 recommendations each with 'Why' + human-approval note, pipeline nav scroll + placeholders, 390px mobile no horizontal overflow. All core flows work; only minor UX issues.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "latest_sensors() in power_routes.py", "issue": "Sorts sensor readings by ISO timestamp string; readings with different tz offsets (+00:00 vs +05:30) will be ordered incorrectly. Store a UTC datetime field and sort on it."},
+      {"endpoint": "POST /api/power/sensor-readings", "issue": "Readings older than the dataset end are accepted (201) but silently ignored in snapshots; and if the most recent stored reading is older, an earlier-but-newer-than-dataset one is never considered. Consider returning a flag/warning ('applied': false)."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "Shell pipeline nav", "issue": "Clicking 'AC Power Monitoring' (pipeline-step-power) while on /power#recommendations does not scroll to top (scrollY stays ~5720).", "selector": "[data-testid='pipeline-step-power']", "priority": "LOW"}
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Scenario comparison", "issues": ["Negative cost differences render as '₹-57,832' instead of '−₹57,832'", "Recharts bar tooltip cursor uses default light grey (#ccc) background — bright block on dark theme; set cursor={{fill:'rgba(255,255,255,0.04)'}}"]},
+      {"screen": "What-If simulator", "issues": ["AC power rating input shows 4 decimals (2.3764) while baseline label shows 2.38 — round display"]},
+      {"screen": "Map", "issues": ["Legend box overlaps southern markers (Tambaram/Sholinganallur) at default zoom; consider fitBounds to located markers"]}
+    ]
+  },
+  "test_report_links": ["/app/backend/tests/test_power_api_e2e.py", "/app/backend/tests/test_power.py", "/app/test_reports/pytest/pytest_results.xml"],
+  "action_items": [
+    "Optional: scroll to top on pipeline-step-power click when already on /power",
+    "Optional: format negative INR as −₹X; fix recharts tooltip cursor color; round rating input display",
+    "Optional: sort sensor readings by parsed UTC datetime instead of string"
+  ],
+  "critical_code_review_comments": [
+    "latest_sensors string sort on timestamps with mixed offsets is incorrect",
+    "ThresholdConfig Defaults button relies on settings.defaults which /overview does not return; works only via hardcoded fallback — use /thresholds defaults or keep single source",
+    "Code is well-structured, files <500 lines, Pydantic validation with extra=forbid, _id excluded"
+  ],
+  "updated_files": ["/app/backend/tests/test_power_api_e2e.py"],
+  "success_rate": {"backend": "100%", "frontend": "97%"},
+  "seed_data_creation": "None left behind. Thresholds restored to 70/85/100/₹8 (verified in mongo power_settings); TEST_ sensor docs deleted (power_sensor_readings count = 0).",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Run: cd /app/backend && REACT_APP_BACKEND_URL=<from frontend/.env> python -m pytest tests/test_power_api_e2e.py -n 0. Tests self-restore thresholds and delete sensor docs with device_id ^TEST_. Building markers are the last leaflet-interactive paths in chennai-leaflet-map. Zone slugs: t-nagar, anna-nagar, adyar etc."
+}

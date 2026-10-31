@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Literal, Optional
 import uuid
 
@@ -26,11 +26,12 @@ async def get_settings():
 
 
 async def latest_sensors():
-    pipeline = [{"$sort": {"timestamp": -1}}, {"$group": {"_id": "$building_id", "doc": {"$first": "$$ROOT"}}}]
+    pipeline = [{"$sort": {"ts_utc": -1}}, {"$group": {"_id": "$building_id", "doc": {"$first": "$$ROOT"}}}]
     out = {}
     async for row in STATE["db"].power_sensor_readings.aggregate(pipeline):
         doc = row["doc"]
         doc.pop("_id", None)
+        doc.pop("ts_utc", None)
         out[row["_id"]] = doc
     return out
 
@@ -210,8 +211,12 @@ async def ingest_reading(r: SensorReading):
     if r.ac_units_operating > units:
         raise HTTPException(status_code=422, detail=f"ac_units_operating exceeds installed units ({units})")
     doc = {"id": str(uuid.uuid4()), **r.model_dump(), "data_source": "IOT_SENSOR"}
-    await STATE["db"].power_sensor_readings.insert_one(dict(doc))
-    return doc
+    ts = datetime.fromisoformat(r.timestamp)
+    await STATE["db"].power_sensor_readings.insert_one({**doc, "ts_utc": ts.astimezone(timezone.utc)})
+    applied = ts > ds().by_building[r.building_id][-1]["ts"]
+    return {**doc, "applied": applied,
+            "message": "Reading replaces the simulated snapshot" if applied else
+            "Stored, but older than the current dataset snapshot, so it is not applied"}
 
 
 @router.get("/sensor-interface")

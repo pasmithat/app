@@ -2,7 +2,7 @@ import { MapContainer, TileLayer, CircleMarker, Circle, Tooltip } from "react-le
 import { SEV, fmt } from "./format";
 
 const Legend = ({ hidden }) => (
-  <div className="absolute bottom-3 left-3 z-[500] bg-[#121824] border border-slate-700 rounded p-2.5 font-mono text-[10px] space-y-1" data-testid="map-legend">
+  <div className="absolute top-3 right-3 z-[500] bg-[#121824] border border-slate-700 rounded p-2.5 font-mono text-[10px] space-y-1" data-testid="map-legend">
     {Object.entries(SEV).map(([k, v]) => (
       <div key={k} className="flex items-center gap-2 text-slate-300">
         <span className="h-2.5 w-2.5 rounded-full" style={{ background: v.color }} /> {v.label}
