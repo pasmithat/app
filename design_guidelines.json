@@ -1,0 +1,178 @@
+{
+  "project_title": "UrbanShield AI - Chennai Heat Resilience & Power Monitoring Command Center",
+  "app_type": "Dashboard / Tactical Operations Center",
+  "theme": "Dark Command Center (Deep Slate / Obsidian with Neon Electric Signal Accents)",
+  "simulated_data_badge": {
+    "text": "SIMULATED DEMO DATA",
+    "style": "bg-amber-500/15 border border-amber-500/40 text-amber-300 text-xs font-mono font-bold tracking-widest px-3 py-1 rounded-full uppercase flex items-center gap-2 animate-pulse",
+    "icon": "Radio / Activity indicator dot"
+  },
+  "typography": {
+    "font_family_heading": "Cabinet Grotesk / Barlow / Outlined Tech Display Sans",
+    "font_family_body": "JetBrains Mono / IBM Plex Sans",
+    "h1": "text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-100",
+    "h2": "text-2xl sm:text-3xl font-bold tracking-tight text-slate-200",
+    "h3": "text-xl sm:text-2xl font-semibold text-slate-200",
+    "h4": "text-lg font-medium text-slate-300",
+    "body": "text-sm sm:text-base text-slate-300 leading-relaxed font-sans",
+    "mono_metric": "font-mono font-semibold tracking-tight text-cyan-400"
+  },
+  "colors": {
+    "background_base": "#0B0F17",
+    "card_background": "#121824",
+    "card_hover": "#1A2333",
+    "border_subtle": "rgba(255, 255, 255, 0.08)",
+    "border_active": "rgba(0, 240, 255, 0.3)",
+    "primary_cyan": "#00F0FF",
+    "accent_blue": "#2563EB",
+    "status_normal": "#34C759",
+    "status_moderate": "#EAB308",
+    "status_high": "#F97316",
+    "status_exceeded": "#EF4444",
+    "text_primary": "#F8FAFC",
+    "text_secondary": "#94A3B8",
+    "text_muted": "#64748B"
+  },
+  "pipeline_navigation": {
+    "container": "sticky top-0 z-50 bg-[#0B0F17]/90 backdrop-blur-md border-b border-slate-800/80 px-4 py-3 flex items-center justify-between",
+    "pipeline_steps": [
+      { "id": "heat-monitoring", "label": "Heat Monitoring", "active": false },
+      { "id": "heat-risk", "label": "Heat Risk", "active": false },
+      { "id": "ac-power-monitoring", "label": "AC Power Monitoring", "active": true, "badge": "LIVE OPERATIONAL" },
+      { "id": "overload-detection", "label": "Overload Detection", "active": false },
+      { "id": "what-if", "label": "What-If Simulator", "active": false },
+      { "id": "recommendations", "label": "Recommendations", "active": false },
+      { "id": "emergency-priority", "label": "Emergency Priority Planning", "active": false }
+    ]
+  },
+  "chennai_zones": [
+    "T. Nagar",
+    "Anna Nagar",
+    "Velachery",
+    "Guindy",
+    "Adyar",
+    "Tambaram",
+    "Perungudi",
+    "Sholinganallur",
+    "Ambattur",
+    "Porur"
+  ],
+  "components": {
+    "kpi_cards_grid": {
+      "metrics": [
+        { "id": "current-demand", "label": "Current Grid Demand", "unit": "kW", "format": "number", "test_id": "kpi-current-demand" },
+        { "id": "total-energy", "label": "Daily Energy Consumed", "unit": "kWh", "format": "number", "test_id": "kpi-total-energy" },
+        { "id": "estimated-cost", "label": "Estimated Daily Cost", "unit": "₹", "format": "currency", "test_id": "kpi-estimated-cost" },
+        { "id": "monitored-buildings", "label": "Monitored Facilities", "unit": "Buildings", "format": "integer", "test_id": "kpi-monitored-buildings" },
+        { "id": "operating-ac-units", "label": "Active AC Units", "unit": "Units", "format": "integer", "test_id": "kpi-operating-ac" },
+        { "id": "capacity-utilization", "label": "Grid Capacity Utilization", "unit": "%", "format": "percentage", "test_id": "kpi-capacity-utilization" },
+        { "id": "overload-alerts", "label": "Active Overload Alerts", "unit": "Alerts", "format": "integer", "test_id": "kpi-overload-alerts" },
+        { "id": "abnormal-consumption", "label": "Abnormal Pattern Breaches", "unit": "Anomalies", "format": "integer", "test_id": "kpi-abnormal-alerts" }
+      ]
+    },
+    "zone_selector": {
+      "type": "Interactive Pills & Dropdown",
+      "test_id": "zone-selector-container",
+      "all_zones_label": "All Chennai Zones (10)"
+    },
+    "buildings_table": {
+      "test_id": "buildings-data-table",
+      "columns": [
+        "Building Name",
+        "Zone",
+        "Operating AC Units",
+        "Rating (kW)",
+        "Grid Status",
+        "Demand (kW)",
+        "Daily Energy (kWh)",
+        "Substation Capacity (kW)",
+        "Utilization %"
+      ],
+      "status_badges": {
+        "Normal": "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30",
+        "Moderate": "bg-yellow-500/20 text-yellow-400 border border-yellow-500/30",
+        "High": "bg-orange-500/20 text-orange-400 border border-orange-500/30",
+        "Exceeded": "bg-red-500/20 text-red-400 border border-red-500/30 animate-pulse"
+      }
+    },
+    "overload_alerts_panel": {
+      "test_id": "overload-alerts-panel",
+      "severity_thresholds": {
+        "Normal": "<70%",
+        "Moderate": "70% - 85%",
+        "High": "85% - 100%",
+        "Exceeded": ">100%"
+      },
+      "features": ["Configurable threshold sliders", "Reason breakdown", "Recommended mitigation action"]
+    },
+    "abnormal_consumption_alerts": {
+      "test_id": "abnormal-alerts-panel",
+      "rule_types": [
+        "Nighttime Unoccupied Surge (+40% above baseline)",
+        "AC Compressor Duty Cycle Stagnation",
+        "Phase Imbalance & Voltage Sag",
+        "Rapid Demand Ramp Rate (>15 kW/min)"
+      ]
+    },
+    "what_if_simulator": {
+      "test_id": "what-if-power-simulator",
+      "sliders": [
+        { "id": "outdoor-temp", "label": "Outdoor Temperature (°C)", "min": 30, "max": 48, "step": 0.5, "default": 38 },
+        { "id": "ac-units", "label": "Active AC Units Ratio (%)", "min": 20, "max": 100, "step": 5, "default": 75 },
+        { "id": "ac-rating", "label": "Avg Unit Rating (kW)", "min": 1.5, "max": 15.0, "step": 0.5, "default": 5.0 },
+        { "id": "operating-hours", "label": "Cooling Operating Hours/day", "min": 4, "max": 24, "step": 1, "default": 14 },
+        { "id": "occupied-buildings", "label": "Occupied Facility Ratio (%)", "min": 30, "max": 100, "step": 5, "default": 85 },
+        { "id": "commercial-tariff", "label": "Electricity Tariff (₹/kWh)", "min": 5.0, "max": 18.0, "step": 0.5, "default": 9.5 },
+        { "id": "substation-capacity", "label": "Substation Max Capacity (kW)", "min": 1000, "max": 25000, "step": 500, "default": 12000 }
+      ],
+      "reset_button": {
+        "label": "RESET TO BASELINE",
+        "test_id": "reset-baseline-button",
+        "style": "bg-slate-800 hover:bg-slate-700 text-cyan-400 border border-cyan-500/40 font-mono text-xs font-bold px-4 py-2 rounded uppercase tracking-wider transition-colors"
+      }
+    },
+    "leaflet_map": {
+      "test_id": "chennai-leaflet-map",
+      "tile_url": "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+      "attribution": "&copy; OpenStreetMap contributors &copy; CARTO",
+      "center": [13.0827, 80.2707],
+      "zoom": 12,
+      "marker_colors": {
+        "Normal": "#34C759",
+        "Moderate": "#EAB308",
+        "High": "#F97316",
+        "Exceeded": "#EF4444"
+      }
+    },
+    "smart_recommendations": {
+      "test_id": "smart-recommendations-panel",
+      "requirement": "Must clearly display 'WHY' explanation box for every action item"
+    },
+    "scenario_comparison": {
+      "test_id": "scenario-comparison-matrix",
+      "scenarios": [
+        "Normal Operating Baseline",
+        "Heatwave Surge (+3.5°C)",
+        "Reduced AC Operating Hours (Eco-Plan)",
+        "AI Load Staggering Optimization",
+        "Extreme Summer Heat Stress"
+      ],
+      "metrics_compared": ["Peak Demand (kW)", "Daily Consumption (kWh)", "Cost Impact (₹)", "Grid Overload Risk"]
+    }
+  },
+  "image_urls": {
+    "chennai_skyline": "https://images.unsplash.com/photo-1560319003-24094e042e10?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "power_grid_hub": "https://images.unsplash.com/photo-1413882353314-73389f63b6fd?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "control_room": "https://images.unsplash.com/photo-1708807472445-d33589e6b090?crop=entropy&cs=srgb&fm=jpg&q=85"
+  },
+  "instructions_to_main_agent": [
+    "Ensure ALL data labels are prominently marked as SIMULATED DEMO DATA throughout the UI.",
+    "Implement the 7-stage app shell pipeline bar at the header, highlighting 'AC Power Monitoring' as the active module.",
+    "Provide interactive zone filtering across all 10 Chennai zones (T. Nagar, Anna Nagar, Velachery, Guindy, Adyar, Tambaram, Perungudi, Sholinganallur, Ambattur, Porur).",
+    "Use Leaflet (react-leaflet or Leaflet JS) with dark CartoDB tile layer for spatial representation.",
+    "Ensure every interactive button, tab, slider, select, and data table row includes an explicit data-testid attribute.",
+    "Use Recharts or Lucide-based visuals for clear demand history, baseline vs simulated comparisons, and scenario charts.",
+    "Do NOT use transparent backgrounds for menus, overlays, or popups — ensure high contrast dark surfaces.",
+    "Provide realistic mock datasets for Chennai commercial and residential facilities across zones."
+  ]
+}
